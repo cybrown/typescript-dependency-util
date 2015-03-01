@@ -66,7 +66,10 @@ class UsageExtractor {
     private processPropertyAccessExpression(expr: ts.PropertyAccessExpression) {
         var fullName = this.getFullNameFromPropertyAccessExpression(expr);
         if (fullName != null) {
-            this.addUsageToCurrentFile(fullName);
+            var parts = fullName.split('.');
+            for (var max = 1; max < parts.length + 1; max++) {
+                this.addUsageToCurrentFile(parts.slice(0, max).join('.'));
+            }
         }
     }
 

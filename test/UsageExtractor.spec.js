@@ -21,6 +21,8 @@ describe('Extract used foreign references', function () {
         var usageFiles = ['example/usage-class-in-file.ts'];
         var usage = extractor.findUsages(usageFiles);
         assertContains(usage[usageFiles[0]], 'a');
+        assertContains(usage[usageFiles[0]], 'BarModule');
+        assertContains(usage[usageFiles[0]], 'BarModule.NestedModule');
         assertContains(usage[usageFiles[0]], 'BarModule.NestedModule.FooExported');
         assertNotContains(usage[usageFiles[0]], 'b');
     });
