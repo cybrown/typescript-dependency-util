@@ -58,11 +58,13 @@ class DependencyManager {
         if (!tree.hasOwnProperty(fileName)) {
             tree[fileName] = [];
         }
-        files.forEach(file => {
-            if (file !== fileName && !tree[fileName].hasOwnProperty(file)) {
-                pushIfNotContained(tree[fileName], file);
-            }
-        });
+        if (files.indexOf(fileName) === -1) {
+            files.forEach(file => {
+                if (file !== fileName && !tree[fileName].hasOwnProperty(file)) {
+                    pushIfNotContained(tree[fileName], file);
+                }
+            });
+        }
     }
 }
 

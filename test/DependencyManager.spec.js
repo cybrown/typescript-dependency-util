@@ -69,4 +69,25 @@ describe('Create dependency graph', function () {
         assert.equal(order[1], 'DummyClassB');
         assert.equal(order[2], 'DummyClassA');
     });
+
+    it ('should not add a dependency to something defined in itself', function () {
+        var exportReportBySymbol = {
+            'moduleA': ['moduleA/module.ts', 'moduleA/file1.ts', 'moduleA/file2.ts'],
+            'moduleA.DummyClass1': ['moduleA/file1.ts'],
+            'moduleA.DummyClass2': ['moduleA/file2.ts'],
+            'moduleB': ['moduleB/module.ts']
+        };
+        var usageReportByFile = {
+            'moduleA/file1.ts': ['moduleA', 'moduleB', 'DummyClassChild'],
+            'moduleA/file2.ts': ['moduleA', 'AnotherClass'],
+            'moduleA/module.ts': ['moduleA'],
+            'moduleB/module.ts': ['moduleB', 'b', 'DummyClassSuper']
+        };
+        var tree = manager.createDepdencyTree(exportReportBySymbol, usageReportByFile);
+        assertNotContains(tree['moduleA/file1.ts'], 'moduleA/module.ts');
+        assertNotContains(tree['moduleA/file1.ts'], 'moduleA/file2.ts');
+        assertNotContains(tree['moduleA/module.ts'], 'moduleA/file1.ts');
+        assertNotContains(tree['moduleA/module.ts'], 'moduleA/file2.ts');
+        manager.sortFromDepdencyTree(tree);
+    });
 });
