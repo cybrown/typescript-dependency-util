@@ -38,4 +38,14 @@ describe('Extract used foreign references', function () {
         assertContains(usage[usageFiles[0]], 'aze');
         assertNotContains(usage[usageFiles[0]], 'module');
     });
+
+    it ('should add usage with current module prefix', function () {
+        var usageFiles = ['example/usage-add-module-name.ts'];
+        var usage = extractor.findUsages(usageFiles);
+        assertContains(usage[usageFiles[0]], 'foo');
+        assertContains(usage[usageFiles[0]], 'Bar');
+        assertContains(usage[usageFiles[0]], 'foo.Fuz');
+        assertContains(usage[usageFiles[0]], 'Fuz');
+        assertNotContains(usage[usageFiles[0]], 'module');
+    });
 });

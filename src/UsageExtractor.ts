@@ -34,7 +34,13 @@ class UsageExtractor {
 
     private visitChildren = true;
 
+    private moduleStack: ts.ModuleDeclaration[] = [];
+
     private processNode(node: ts.Node) {
+        if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
+            this.moduleStack.push(<ts.ModuleDeclaration>node);
+        }
+
         if (node.kind === ts.SyntaxKind.Identifier) {
             var identifier = <ts.Identifier>node;
             //console.log(`Identifier: ${identifier.text} <= ${kindToString(identifier.parent.kind)}`);
@@ -48,10 +54,29 @@ class UsageExtractor {
             ts.forEachChild(node, node => this.processNode(node));
         }
         this.visitChildren = true;
+
+        if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
+            this.moduleStack.pop();
+        }
+    }
+
+    private isInModule(): boolean {
+        return this.moduleStack.length > 0;
+    }
+
+    private currentModuleFullName(): string {
+        if (this.moduleStack.length) {
+            return this.moduleStack.map(moduleDeclaration => moduleDeclaration.name.text).join('.');
+        } else {
+            return '';
+        }
     }
 
     private processIdentifier(id: ts.Identifier) {
         this.addUsageToCurrentFile(id.text);
+        if (this.isInModule()) {
+            this.addUsageToCurrentFile(this.currentModuleFullName() + '.' + id.text);
+        }
     }
 
     private addUsageToCurrentFile(usage: string) {
@@ -69,6 +94,9 @@ class UsageExtractor {
             var parts = fullName.split('.');
             for (var max = 1; max < parts.length + 1; max++) {
                 this.addUsageToCurrentFile(parts.slice(0, max).join('.'));
+                if (this.isInModule()) {
+                    this.addUsageToCurrentFile(this.currentModuleFullName() + '.' + parts.slice(0, max).join('.'));
+                }
             }
         }
     }
