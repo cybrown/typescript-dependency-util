@@ -1,0 +1,16 @@
+{
+  "name": "typescript-dependency-util",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run compile && mocha",
+    "compile": "tsc src/*.ts typings/**/*.d.ts --outDir lib --target es5 --module commonjs"
+  },
+  "author": "Cy Brown <cy.brown59@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "typescript": "^1.4.1"
+  }
+}
