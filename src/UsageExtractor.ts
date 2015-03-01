@@ -80,6 +80,7 @@ class UsageExtractor {
             var prop = <ts.PropertyAccessExpression>expr.expression;
             return this.getFullNameFromPropertyAccessExpression(prop) + '.' + expr.name.text;
         } else {
+            this.processNode(expr.expression);
             return null;
         }
     }

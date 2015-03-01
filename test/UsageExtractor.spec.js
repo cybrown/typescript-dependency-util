@@ -26,4 +26,16 @@ describe('Extract used foreign references', function () {
         assertContains(usage[usageFiles[0]], 'BarModule.NestedModule.FooExported');
         assertNotContains(usage[usageFiles[0]], 'b');
     });
+
+    it ('should extract usage in lhs of property', function () {
+        var usageFiles = ['example/usage-property.ts'];
+        var usage = extractor.findUsages(usageFiles);
+        assertContains(usage[usageFiles[0]], 'foo');
+        assertContains(usage[usageFiles[0]], 'foo.module');
+        assertContains(usage[usageFiles[0]], 'mod');
+        assertContains(usage[usageFiles[0]], 'mod.modMod');
+        assertContains(usage[usageFiles[0]], 'mod.modMod.name');
+        assertContains(usage[usageFiles[0]], 'aze');
+        assertNotContains(usage[usageFiles[0]], 'module');
+    });
 });
