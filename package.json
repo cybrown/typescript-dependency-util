@@ -1,8 +1,9 @@
 {
   "name": "typescript-dependency-util",
   "version": "0.0.5",
-  "description": "",
+  "description": "Dependency utilities for TypeScript",
   "main": "index.js",
+  "repository": "https://github.com/cybrown/typescript-dependency-util",
   "scripts": {
     "test": "npm run compile && mocha",
     "compile": "tsc src/*.ts typings/**/*.d.ts --outDir lib --target es5 --module commonjs"
