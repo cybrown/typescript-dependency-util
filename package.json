@@ -1,6 +1,6 @@
 {
   "name": "typescript-dependency-util",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Dependency utilities for TypeScript",
   "main": "index.js",
   "repository": "https://github.com/cybrown/typescript-dependency-util",
